@@ -40,4 +40,5 @@ public class Balance {
     @JoinColumn(name = "limit_id")
     private LimitAccount limitAccount;
     private OffsetDateTime date;
+    private Boolean isLatest;
 }

@@ -4,6 +4,7 @@ import com.klochkov.idflabtest.dto.LimitBalanceDto;
 import com.klochkov.idflabtest.entity.Balance;
 import com.klochkov.idflabtest.entity.LimitAccount;
 import com.klochkov.idflabtest.entity.Transaction;
+import com.klochkov.idflabtest.exception.ResourceNotFoundException;
 import com.klochkov.idflabtest.repository.BalanceRepository;
 import com.klochkov.idflabtest.service.BalanceService;
 import jakarta.transaction.Transactional;
@@ -11,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -27,13 +29,27 @@ public class BalanceServiceImpl implements BalanceService {
     @Transactional
     public Balance addBalance(Transaction transaction, LimitBalanceDto dataAboutOldBalance,
                               BigDecimal sumUSD, LimitAccount limitAccount) {
+        Balance oldBalance = getBalanceById(dataAboutOldBalance.getBalanceId());
         Balance balance = Balance.builder()
                 .balanceAmount(dataAboutOldBalance.getAmount().subtract(sumUSD))
                 .date(transaction.getDateTime())
                 .account(transaction.getAccountFrom())
                 .category(transaction.getExpenseCategory())
                 .limitAccount(limitAccount)
+                .isLatest(true)
                 .build();
+        oldBalance.setIsLatest(false);
+        balanceRepository.save(oldBalance);
         return balanceRepository.save(balance);
+    }
+    /**
+     * Method for searching balance by id.
+     *
+     * @param id - id for searching
+     */
+    @Transactional
+    public Balance getBalanceById(UUID id) {
+        return balanceRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Not Found balance with id: " + id));
     }
 }
