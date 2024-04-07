@@ -11,7 +11,7 @@
             <column name="id" type="UUID">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="account" type="VARCHAR(255)">
+            <column name="account" type="bigint">
                 <constraints nullable="false"/>
             </column>
             <column name="category" type="VARCHAR(255)">
@@ -20,11 +20,17 @@
             <column name="limit_amount" type="DECIMAL(15, 2)">
                 <constraints nullable="false"/>
             </column>
-            <column name="date" type="DATE">
+            <column name="limit_exceeded" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="currency" type="varchar(10)" defaultValue="USD">
                 <constraints nullable="false"/>
             </column>
         </createTable>
-        <addUniqueConstraint tableName="limits" columnNames="account, category"/>
+        <addUniqueConstraint tableName="limits" columnNames="account, category, date"/>
     </changeSet>
 
     <changeSet id="002-create-table-transactions" author="klochkov">
@@ -39,13 +45,13 @@
             <column name="account_to" type="bigint" valueNumeric="10">
                 <constraints nullable="false"/>
             </column>
-            <column name="currency_shortname" type="char">
+            <column name="currency_shortname" type="CHARACTER(3)">
                 <constraints nullable="false"/>
             </column>
             <column name="sum" type="DECIMAL(19,2)">
                 <constraints nullable="false"/>
             </column>
-            <column name="expense_category" type="text">
+            <column name="expense_category" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
             <column name="datetime" type="TIMESTAMP WITH TIME ZONE">
@@ -65,7 +71,7 @@
             <column name="id" type="UUID">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="account" type="VARCHAR(255)">
+            <column name="account" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
             <column name="category" type="VARCHAR(255)">
@@ -77,8 +83,11 @@
             <column name="limit_id" type="UUID">
                 <constraints nullable="false"/>
             </column>
+            <column name="date" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
-        <addUniqueConstraint tableName="balances" columnNames="account, category"/>
+        <addUniqueConstraint tableName="balances" columnNames="account, category, date"/>
         <addForeignKeyConstraint baseTableName="balances" baseColumnNames="limit_id"
                                  constraintName="fk_balances_limit_id"
                                  referencedTableName="limits" referencedColumnNames="id"/>
