@@ -3,7 +3,9 @@ package com.klochkov.idflabtest.service;
 import com.klochkov.idflabtest.entity.Balance;
 import com.klochkov.idflabtest.entity.LimitAccount;
 import org.springframework.stereotype.Service;
+import com.klochkov.idflabtest.enumeration.Category;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Service
@@ -14,8 +16,25 @@ public interface LimitAccountService {
      * @param uuid - uuid of limitAccount.
      */
     LimitAccount getLimitAccountById(UUID uuid);
+
     /**
      * Method for changing limit_exceeded if balance less zero.
      */
-    void changeLimitExceededAsNeeded(Balance balance, LimitAccount limitAccount);
+    LimitAccount changeLimitExceededAsNeeded(Balance balance, LimitAccount limitAccount);
+
+    /**
+     * Method for setting new limit.
+     *
+     * @param id - uuid of limitAccount.
+     * @return new limitAccount
+     */
+    LimitAccount setLimitByLatestLimitId(UUID id, BigDecimal limit);
+    /**
+     * Method for setting new limit.
+     *
+     * @param category - category.
+     * @param account - account.
+     * @return new limitAccount
+     */
+    LimitAccount setLimitByCategoryAndAccount(Category category, Long account, BigDecimal limit);
 }

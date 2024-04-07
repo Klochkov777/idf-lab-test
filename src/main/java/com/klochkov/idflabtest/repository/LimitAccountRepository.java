@@ -3,6 +3,8 @@ package com.klochkov.idflabtest.repository;
 import com.klochkov.idflabtest.entity.LimitAccount;
 import com.klochkov.idflabtest.enumeration.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -17,10 +19,12 @@ public interface LimitAccountRepository extends JpaRepository<LimitAccount, UUID
      */
     Optional<LimitAccount> findById(UUID id);
     /**
-     * Method for searching limit for account and category with last date.
+     * Method for searching limit for account and category with latest.
      *
      * @param account - account number.
      * @param category - product or service.
      */
-    LimitAccount findFirstByAccountAndCategoryOrderByDateDesc(Long account, Category category);
+    @Query(value = "FROM LimitAccount l WHERE l.category = :category and l.account = :account and l.isLatest = true ")
+    LimitAccount findLimitAccountByCategoryAndAccountAndIsLatestTrue(@Param("account") Long account,
+                                                                     @Param("category") Category category);
 }
