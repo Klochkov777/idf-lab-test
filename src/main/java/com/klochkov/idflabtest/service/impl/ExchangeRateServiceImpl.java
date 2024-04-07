@@ -2,6 +2,7 @@ package com.klochkov.idflabtest.service.impl;
 
 import com.klochkov.idflabtest.dto.ResponseCurrencyRateDto;
 import com.klochkov.idflabtest.entity.ExchangeRate;
+import com.klochkov.idflabtest.exception.ResourceNotFoundException;
 import com.klochkov.idflabtest.repository.ExchangeRateRepository;
 import com.klochkov.idflabtest.service.ExchangeRateService;
 import jakarta.transaction.Transactional;
@@ -63,7 +64,7 @@ public class ExchangeRateServiceImpl implements ExchangeRateService {
         Optional<ExchangeRate> optionalExchangeRate = exchangeRateRepository
                 .findFirstByCurrencyOrderByExchangeDateDesc(currency);
         return optionalExchangeRate
-                .orElseThrow(() -> new RuntimeException("Not found exchangeRate for currency "
+                .orElseThrow(() -> new ResourceNotFoundException("Not found exchangeRate for currency "
                         + currency));
     }
     /**

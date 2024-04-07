@@ -34,4 +34,5 @@ public class LimitAccount {
     private Boolean limitExceeded;
     private String currency;
     private OffsetDateTime date;
+    private Boolean isLatest;
 }
