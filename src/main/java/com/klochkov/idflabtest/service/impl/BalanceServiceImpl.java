@@ -4,6 +4,7 @@ import com.klochkov.idflabtest.dto.LimitBalanceDto;
 import com.klochkov.idflabtest.entity.Balance;
 import com.klochkov.idflabtest.entity.LimitAccount;
 import com.klochkov.idflabtest.entity.Transaction;
+import com.klochkov.idflabtest.enumeration.Category;
 import com.klochkov.idflabtest.exception.ResourceNotFoundException;
 import com.klochkov.idflabtest.repository.BalanceRepository;
 import com.klochkov.idflabtest.service.BalanceService;
@@ -51,5 +52,37 @@ public class BalanceServiceImpl implements BalanceService {
     public Balance getBalanceById(UUID id) {
         return balanceRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Not Found balance with id: " + id));
+    }
+    /**
+     * Method for searching latest balance by id of limit.
+     *
+     * @param limitAccountId - id for searching
+     */
+    @Transactional
+    public Balance getBalanceByLimitIdLatest(UUID limitAccountId) {
+        return balanceRepository.findBalanceByLimitAccountIdAndIsLatest(limitAccountId)
+                .orElseThrow(() -> new ResourceNotFoundException("Balance for limit with id: " + limitAccountId
+                + "was not found"));
+    }
+    /**
+     * Method for saving balance.
+     *
+     * @param balance - balance
+     * @return  balance
+     */
+    @Transactional
+    public Balance saveBalance(Balance balance) {
+        return balanceRepository.save(balance);
+    }
+    /**
+     * Method for searching balance.
+     *
+     * @param category - category
+     * @param account - account
+     * @return  balance
+     */
+    @Transactional
+    public Balance getBalanceByCategoryAndAccountLatest(Category category, Long account) {
+        return balanceRepository.findBalanceByAccountAndCategoryAndIsLatestTrue(account, category);
     }
 }

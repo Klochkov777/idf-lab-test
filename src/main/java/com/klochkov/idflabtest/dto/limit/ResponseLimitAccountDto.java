@@ -1,7 +1,6 @@
-package com.klochkov.idflabtest.dto.transaction;
+package com.klochkov.idflabtest.dto.limit;
 
 import com.klochkov.idflabtest.enumeration.Category;
-
 import lombok.NoArgsConstructor;
 import lombok.Data;
 import lombok.Builder;
@@ -17,16 +16,12 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class ResponseTransactionDto {
+public class ResponseLimitAccountDto {
     private UUID id;
-    private Long accountFrom;
-    private Long accountTo;
-    private String currencyShortname;
-    private BigDecimal sum;
-    private Category expenseCategory;
-    private OffsetDateTime dateTime;
-    private BigDecimal limitSum;
-    private OffsetDateTime limitDateTime;
-    private String currency;
+    private Long account;
+    private Category category;
+    private BigDecimal limitAmount;
     private Boolean limitExceeded;
+    private String currency;
+    private OffsetDateTime date;
 }
