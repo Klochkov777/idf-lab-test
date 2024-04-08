@@ -6,6 +6,10 @@ import com.klochkov.idflabtest.entity.Transaction;
 import com.klochkov.idflabtest.mapper.TransactionMapper;
 import com.klochkov.idflabtest.service.impl.FacadeServiceImpl;
 import com.klochkov.idflabtest.service.impl.TransactionServiceImpl;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +38,11 @@ public class TransactionController {
      * @param requestTransactionDto - the body of request.
      * @return - if transaction will be saved status ok will be returned.
      */
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Save transaction, change balance",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ResponseTransactionDto.class))}),
+            @ApiResponse(responseCode = "400", description = "Invalid parameters provided")})
     @PostMapping()
     public ResponseEntity<ResponseTransactionDto> saveTransaction(@Valid
                                                                   @RequestBody
@@ -48,6 +57,11 @@ public class TransactionController {
      *
      * @return - list of responseTransactionDto where limit_exceeded is true.
      */
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Found all transactions with limit_exceeded true",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ResponseTransactionDto.class))}),
+            @ApiResponse(responseCode = "400", description = "Invalid parameters provided")})
     @GetMapping()
     public ResponseEntity<List<ResponseTransactionDto>> getAllTransactionsWithLimitExceeded() {
         List<Transaction> allTransactionsWithLimitExceeded = transactionService
