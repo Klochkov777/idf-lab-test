@@ -5,6 +5,10 @@ import com.klochkov.idflabtest.entity.LimitAccount;
 import com.klochkov.idflabtest.enumeration.Category;
 import com.klochkov.idflabtest.mapper.LimitAccountMapper;
 import com.klochkov.idflabtest.service.LimitAccountService;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.annotation.Nullable;
 import jakarta.validation.ValidationException;
 import jakarta.validation.constraints.NotNull;
@@ -36,12 +40,17 @@ public class LimitController {
      * @param limit - limit.
      * @return - if transaction will be saved status ok will be returned.
      */
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "set new limit and change balance",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ResponseLimitAccountDto.class))})})
+    @ApiResponse(responseCode = "400", description = "Invalid parameters provided")
     @PostMapping()
-    public ResponseEntity<ResponseLimitAccountDto> setLimit(@Nullable @RequestParam
+    public ResponseEntity<ResponseLimitAccountDto> setLimit(@Nullable @RequestParam(required = false)
                                                                 String category,
-                                                            @Nullable @RequestParam
+                                                            @Nullable @RequestParam(required = false)
                                                             Long account,
-                                                            @Nullable @RequestParam
+                                                            @Nullable @RequestParam(required = false)
                                                             String id,
                                                             @RequestParam @NotNull
                                                                 BigDecimal limit) {
