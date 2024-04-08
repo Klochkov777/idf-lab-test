@@ -1,0 +1,24 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/idf_lab_test_db
+    username: postgres
+    password: password
+    hikari:
+      show-sql: true
+  liquibase:
+    change-log: classpath:db.changelog/db.changelog-master.xml
+    enabled: true
+    contexts: dev
+  jpa.show-sql: true
+  properties:
+    hibernate:
+      use_sql_comments: true
+
+  logging.level.org.hibernate.type.descriptor.sql: trace
+
+currency:
+  symbols: EUR, RUB, KZT
+
+api-key:
+  twelvedata: ${API_KEY_TWELVEDATA:demo}
+
