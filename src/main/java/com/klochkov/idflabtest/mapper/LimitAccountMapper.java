@@ -6,5 +6,11 @@ import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface LimitAccountMapper {
+    /**
+     * Method for mapping LimitAccount to ResponseLimitAccountDto.
+     *
+     * @param limitAccount - limitAccount
+     * @return ResponseLimitAccountDto
+     */
     ResponseLimitAccountDto toResponseLimitAccountDto(LimitAccount limitAccount);
 }

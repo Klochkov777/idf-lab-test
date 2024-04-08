@@ -4,7 +4,6 @@ import com.klochkov.idflabtest.entity.Balance;
 import com.klochkov.idflabtest.entity.LimitAccount;
 import com.klochkov.idflabtest.enumeration.Category;
 import com.klochkov.idflabtest.exception.ResourceNotFoundException;
-import com.klochkov.idflabtest.mapper.LimitAccountMapper;
 import com.klochkov.idflabtest.repository.LimitAccountRepository;
 import com.klochkov.idflabtest.service.BalanceService;
 import com.klochkov.idflabtest.service.LimitAccountService;
@@ -54,18 +53,18 @@ public class LimitAccountServiceImpl implements LimitAccountService {
     }
 
     private LimitAccount setLimitAccountAndChangeBalance(LimitAccount limitAccountOld, Balance balanceOld,
-                                                         BigDecimal limit ) {
+                                                         BigDecimal limit) {
         BigDecimal amountBalanceNew = getNewBalanceAmount(limit, limitAccountOld
                 .getLimitAmount(), balanceOld.getBalanceAmount());
         LimitAccount limitAccountNew = buildNewLimitAccount(limitAccountOld, limit);
         Balance balanceNew = buildNewBalance(amountBalanceNew, limitAccountNew, balanceOld);
-        LimitAccount result = changeLimitExceededAsNeeded(balanceNew, limitAccountNew);
+        limitAccountNew = changeLimitExceededAsNeeded(balanceNew, limitAccountNew);
         limitAccountOld.setIsLatest(false);
         limitAccountRepository.save(limitAccountOld);
         balanceOld.setIsLatest(false);
         balanceService.saveBalance(balanceOld);
         balanceService.saveBalance(balanceNew);
-        return result;
+        return limitAccountNew;
     }
     /**
      * Method for calculate new balanceAmount.
@@ -85,7 +84,7 @@ public class LimitAccountServiceImpl implements LimitAccountService {
      * @param limit - limit amount new.
      * @return limitAccount
      */
-    private LimitAccount buildNewLimitAccount (LimitAccount limitAccountOld, BigDecimal limit) {
+    private LimitAccount buildNewLimitAccount(LimitAccount limitAccountOld, BigDecimal limit) {
         return LimitAccount.builder()
                 .account(limitAccountOld.getAccount())
                 .limitAmount(limit)
@@ -105,7 +104,7 @@ public class LimitAccountServiceImpl implements LimitAccountService {
      * @param balanceOld - balanceOld.
      * @return balance new
      */
-    private Balance buildNewBalance (BigDecimal amountBalanceNew, LimitAccount limitAccountNew, Balance balanceOld) {
+    private Balance buildNewBalance(BigDecimal amountBalanceNew, LimitAccount limitAccountNew, Balance balanceOld) {
         return  Balance.builder()
                 .balanceAmount(amountBalanceNew)
                 .isLatest(true)

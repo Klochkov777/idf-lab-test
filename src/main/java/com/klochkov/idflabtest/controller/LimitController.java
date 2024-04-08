@@ -5,11 +5,8 @@ import com.klochkov.idflabtest.entity.LimitAccount;
 import com.klochkov.idflabtest.enumeration.Category;
 import com.klochkov.idflabtest.mapper.LimitAccountMapper;
 import com.klochkov.idflabtest.service.LimitAccountService;
-import com.klochkov.idflabtest.validator.annotation.CheckFormatCategory;
 import jakarta.annotation.Nullable;
-import jakarta.validation.Valid;
 import jakarta.validation.ValidationException;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +27,15 @@ import java.util.UUID;
 public class LimitController {
     private final LimitAccountService limitAccountService;
     private final LimitAccountMapper mapper;
-
+    /**
+     * Method for getting request and creating response after finding.
+     *
+     * @param category - category.
+     * @param account - account.
+     * @param id - id.
+     * @param limit - limit.
+     * @return - if transaction will be saved status ok will be returned.
+     */
     @PostMapping()
     public ResponseEntity<ResponseLimitAccountDto> setLimit(@Nullable @RequestParam
                                                                 String category,
@@ -40,16 +45,16 @@ public class LimitController {
                                                             String id,
                                                             @RequestParam @NotNull
                                                                 BigDecimal limit) {
-        Optional<ResponseLimitAccountDto> optional = Optional.ofNullable(new ResponseLimitAccountDto());
+        Optional<ResponseLimitAccountDto> optional = Optional
+                .ofNullable(new ResponseLimitAccountDto());
         if (id != null) {
             LimitAccount limitAccount = limitAccountService.setLimitByLatestLimitId(UUID.fromString(id), limit);
             return ResponseEntity.ok(mapper.toResponseLimitAccountDto(limitAccount));
         } else if (!category.isBlank() && account != null) {
-            LimitAccount limitAccount = limitAccountService.setLimitByCategoryAndAccount(Category.valueOf(category), account, limit);
+            LimitAccount limitAccount = limitAccountService
+                    .setLimitByCategoryAndAccount(Category.valueOf(category), account, limit);
             return ResponseEntity.ok(mapper.toResponseLimitAccountDto(limitAccount));
         }
         return ResponseEntity.ok(optional.orElseThrow(() -> new ValidationException("Not valid parameters")));
     }
-
-
 }

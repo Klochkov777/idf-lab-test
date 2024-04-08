@@ -37,6 +37,13 @@
         <property name="fileNamePattern" value="module\-info\.java$"/>
     </module>
 
+    <module name="TreeWalker">
+        <module name="VariableDeclarationUsageDistance">
+            <property name="validateBetweenScopes" value="true"/>
+            <property name="allowedDistance" value="10"/>
+        </module>
+    </module>
+
     <!-- https://checkstyle.org/config_filters.html#SuppressionFilter -->
     <module name="SuppressionFilter">
         <property name="file" value="config/checkstyle/checkstyle-suppressions.xml"/>
