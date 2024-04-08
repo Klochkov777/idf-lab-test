@@ -115,4 +115,6 @@
         <addUniqueConstraint tableName="exchange_rates" columnNames="currency, exchange_date"/>
     </changeSet>
 
+    <include file="insert-test-data.xml" relativeToChangelogFile="true"/>
+
 </databaseChangeLog>
