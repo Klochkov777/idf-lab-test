@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+
+  app:
+    image: ghcr.io/klochkov777/idf-lab-test:latest
+    container_name: idf_lub_prod
+    ports:
+      - "8080:8080"
+      - "8443:8443"
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:15.3
+    container_name: postgres_db
+    volumes:
+      - ./data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: idf_lab_test-db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin_app
+    environment:
+      PGADMIN_DEFAULT_EMAIL: user@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: password
+    ports:
+      - "8888:80"
+    depends_on:
+      - postgres

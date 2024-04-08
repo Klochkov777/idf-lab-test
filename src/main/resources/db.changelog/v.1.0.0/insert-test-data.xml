@@ -1,0 +1,60 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+
+
+    <changeSet id="insertTestDataToLimits" author="klochkov" context="test">
+        <sql>
+            INSERT INTO limits (id, account, category, limit_amount, limit_exceeded, date, currency, is_latest)
+            VALUES ('b5b80331-b0fb-42c8-bddf-7a168817c0ee', '1111111', 'PRODUCT', '1000', 'false', '2024-04-04', 'USD', 'false');
+            INSERT INTO limits (id, account, category, limit_amount, limit_exceeded, date, currency, is_latest)
+            VALUES ('b5b80331-b0fb-42c8-bddf-7a168817c9ee', '1111111', 'SERVICE', '1100', 'false', '2024-04-05', 'USD', 'false');
+            INSERT INTO limits (id, account, category, limit_amount, limit_exceeded, date, currency, is_latest)
+            VALUES ('b5b80331-b0fb-42c8-bddf-7a168817c1ee', '3333333', 'PRODUCT', '1000', 'false', '2024-04-06', 'USD', 'false');
+            INSERT INTO limits (id, account, category, limit_amount, limit_exceeded, date, currency, is_latest)
+            VALUES ('b5b80331-b0fb-42c8-bddf-7a168817c6ee', '3333333', 'SERVICE', '1010', 'false', '2024-04-05', 'USD', 'false');
+            INSERT INTO limits (id, account, category, limit_amount, limit_exceeded, date, currency, is_latest)
+            VALUES ('b5b80331-b0fb-42c8-bddf-7a168817c8ee', '1111111', 'PRODUCT', '1200', 'false', '2024-04-06', 'USD', 'true');
+        </sql>
+    </changeSet>
+
+    <changeSet id="insertTestData" author="klochkov" context="test">
+        <sql>
+            INSERT INTO balances (id, account, category, balance_amount, limit_id, date, is_latest)
+            VALUES ('b5b80331-b0fb-42c8-bddf-7a168817c1ee',
+                    '1111111', 'PRODUCT', '1000.00', 'b5b80331-b0fb-42c8-bddf-7a168817c0ee', '2024-03-04 00:00:00.000000 +00:00', 'false');
+            INSERT INTO balances (id, account, category, balance_amount, limit_id, date, is_latest)
+            VALUES ('b5b80331-b0fb-42c8-bddf-7a168817c2ee',
+                    '1111111', 'SERVICE', '-30.00', 'b5b80331-b0fb-42c8-bddf-7a168817c9ee', '2024-03-05 00:00:00.000000 +00:00', 'false');
+            INSERT INTO balances (id, account, category, balance_amount, limit_id, date, is_latest)
+            VALUES ('b5b80331-b0fb-42c8-bddf-7a168817c3ee',
+                    '3333333', 'PRODUCT', '100.00', 'b5b80331-b0fb-42c8-bddf-7a168817c1ee', '2024-03-06 00:00:00.000000 +00:00', 'false');
+            INSERT INTO balances (id, account, category, balance_amount, limit_id, date, is_latest)
+            VALUES ('b5b80331-b0fb-42c8-bddf-7a168817c4ee',
+                    '3333333', 'SERVICE', '600.00', 'b5b80331-b0fb-42c8-bddf-7a168817c6ee', '2024-03-06 00:00:00.000000 +00:00', 'false');
+            INSERT INTO balances (id, account, category, balance_amount, limit_id, date, is_latest)
+            VALUES ('b5b80331-b0fb-42c8-bddf-7a168817c5ee',
+                    '1111111', 'PRODUCT', '940.00', 'b5b80331-b0fb-42c8-bddf-7a168817c0ee', '2024-03-05 00:00:00.000000 +00:00', 'false');
+            INSERT INTO balances (id, account, category, balance_amount, limit_id, date, is_latest)
+            VALUES ('b5b80331-b0fb-42c8-bddf-3a168817c2ee',
+                    '1111111', 'PRODUCT', '1000.00', 'b5b80331-b0fb-42c8-bddf-7a168817c8ee', '2024-03-26 00:00:00.000000 +00:00', 'true');
+        </sql>
+    </changeSet>
+
+    <changeSet id="insertTestDataToExchangeRate" author="klochkov" context="test">
+        <sql>
+            INSERT INTO exchange_rates (currency, rate, exchange_date)
+            VALUES ('EUR', '2', '2024-04-01');
+            INSERT INTO exchange_rates (currency, rate, exchange_date)
+            VALUES ('RUB', '1', '2024-04-01');
+            INSERT INTO exchange_rates (currency, rate, exchange_date)
+            VALUES ('KZT', '1', '2024-04-01');
+            INSERT INTO exchange_rates (currency, rate, exchange_date)
+            VALUES ('EUR', '3', '2024-04-02');
+        </sql>
+    </changeSet>
+
+
+
+</databaseChangeLog>
